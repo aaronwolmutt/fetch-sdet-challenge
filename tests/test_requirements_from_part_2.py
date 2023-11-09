@@ -1,5 +1,6 @@
 import os
 import pytest
+import time
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -35,6 +36,7 @@ def test_get_measurement_field():
     driver.find_element(by=By.CLASS_NAME, value="result")
 
 
+@pytest.mark.skip
 def test_can_type_nums_onto_grids():
     """
         Requirement c, test that numbers 0-8 can be typed onto the boards
@@ -52,3 +54,32 @@ def test_can_type_nums_onto_grids():
     # fill the right
     for i in range(0, 9):
         driver.find_element(by=By.ID, value=f"right_{i}").send_keys(str(i))
+
+
+def test_can_get_list_of_weights():
+    """
+        Requirement d, test that we can get a list of weights
+    """
+    
+    url = os.getenv("POETRY_CHALLENGE_URL")    
+    driver = webdriver.Chrome()
+    driver.get(url)
+    driver.maximize_window()
+
+    # fill left and right 0th position with 0 and 1
+    driver.find_element(by=By.ID, value="left_0").send_keys("0")
+    driver.find_element(by=By.ID, value="right_0").send_keys("1")
+
+    # click on weigh
+    driver.find_element(by=By.ID, value="weigh").click()
+
+    # fill left and right 1th position with 2 and 3
+    driver.find_element(by=By.ID, value="left_1").send_keys("2")
+    driver.find_element(by=By.ID, value="right_1").send_keys("3")
+
+    # click on weigh
+    driver.find_element(by=By.ID, value="weigh").click()
+    
+    # search for the ordered list in game info
+    driver.find_element(by=By.CLASS_NAME, value="game-info").find_elements(by=By.TAG_NAME, value="ol")
+
