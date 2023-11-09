@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-@pytest.mark.skip
+
 def test_clicks_on_buttons():
     """
         Requirement a, test that the weigh and reset buttons can be clicked
@@ -22,7 +22,7 @@ def test_clicks_on_buttons():
     driver.find_element(by=By.ID, value="weigh").click()
     driver.find_element(by=By.ID, value="reset").click()
 
-@pytest.mark.skip
+
 def test_get_measurement_field():
     """
         Requirement b, test that we can get the result field between the game boards
@@ -38,7 +38,6 @@ def test_get_measurement_field():
     driver.find_element(by=By.CLASS_NAME, value="result")
 
 
-@pytest.mark.skip
 def test_can_type_nums_onto_grids():
     """
         Requirement c, test that numbers 0-8 can be typed onto the boards
@@ -58,7 +57,6 @@ def test_can_type_nums_onto_grids():
         driver.find_element(by=By.ID, value=f"right_{i}").send_keys(str(i))
 
 
-@pytest.mark.skip
 def test_can_get_list_of_weights():
     """
         Requirement d, test that we can get a list of weights
@@ -83,8 +81,14 @@ def test_can_get_list_of_weights():
     # click on weigh
     driver.find_element(by=By.ID, value="weigh").click()
     
-    # search for the ordered list in game info
-    driver.find_element(by=By.CLASS_NAME, value="game-info").find_elements(by=By.TAG_NAME, value="ol")
+    # wait for the weights to render 
+    WebDriverWait(driver, 30).until(EC.visibility_of_all_elements_located((By.TAG_NAME, "li")))
+
+     # search for the ordered list in game info
+    weights = driver.find_element(by=By.CLASS_NAME, value="game-info").find_elements(by=By.TAG_NAME, value="li")
+    
+    # fail the test if two wieghts are not in the list 
+    assert len([i.text for i in weights]) == 2
 
 
 def test_gold_bar_alert_is_present():
