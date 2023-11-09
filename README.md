@@ -32,13 +32,13 @@ $ export POETRY_CHALLENGE_URL="http://sdetchallenge.fetch.com/"
 $ poetry install
 ```
 
-### Run the unit tests
+### Run the unit tests (for requirements in problem 2)
 
 ```
 $ poetry run pytest
 ```
 
-### Run the full suite
+### Run the full suite (algorithm in problem 3)
 
 ```
 $ poetry run start
