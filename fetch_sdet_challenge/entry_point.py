@@ -39,14 +39,18 @@ def main():
                 # fake found, press the ith coin
                 driver.find_element(by=By.ID, value=f"coin_{i}").click()
                 print("solution found")
+                alert = WebDriverWait(driver, 5).until(EC.alert_is_present)
+                assert alert.text == "Yay! You find it!"
                 driver.close()
                 
             elif ">" in weights[-1]:
                 # fake found, press the ith - 1 coin
                 driver.find_element(by=By.ID, value=f"coin_{j}").click()
                 print("solution found")
+                alert = WebDriverWait(driver, 5).until(EC.alert_is_present)
+                assert alert.text == "Yay! You find it!"
                 driver.close()
             j -= 1
     except Exception as e:
-        print("solution found")
+        print(f"Unhandled exception: {e}")
         driver.close()
